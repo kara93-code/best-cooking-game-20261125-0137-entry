@@ -6,9 +6,9 @@
 import { recipeById } from './config.js';
 import { spawnOrder, startDay } from './state.js';
 
-function setOrder(game, recipeId, patience) {
+function setOrder(game, recipeId, patience, special = false) {
   const recipe = recipeById(recipeId);
-  const order = { id: 900 + game.orders.length, recipe, patience, maxPatience: patience, reward: recipe.price };
+  const order = { id: 900 + game.orders.length, recipe, patience, maxPatience: patience, reward: special ? Math.round(recipe.price * 1.5) : recipe.price, special };
   game.orders.push(order);
   return order;
 }
@@ -60,7 +60,7 @@ export function stageShot(name, game) {
     return;
   }
   if (name === 'serve') {
-    setOrder(game, 'nasi-ayam', 12);
+    setOrder(game, 'nasi-ayam', 12, true);
     setOrder(game, 'komplit', 22);
     setOrder(game, 'es-teh', 30);
     game.time = 138;
@@ -80,7 +80,7 @@ export function stageShot(name, game) {
     return;
   }
   // cover (default): a busy kitchen, three orders, food everywhere.
-  setOrder(game, 'nasi-ayam', 40);
+  setOrder(game, 'nasi-ayam', 40, true);
   setOrder(game, 'mie-goreng', 28);
   setOrder(game, 'es-teh', 47);
   game.time = 62;

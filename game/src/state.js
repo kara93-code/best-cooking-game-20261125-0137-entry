@@ -3,7 +3,8 @@
 
 import {
   DAY_SECONDS, EARLY_RECIPES, LATE_RECIPES, MAX_ORDERS, MAX_STARS,
-  RICE_MAX, recipeById, sameItems,
+  PERFECT_BONUS_MULT, PERFECT_THRESHOLD, RICE_MAX, SPECIAL_CHANCE,
+  SPECIAL_PATIENCE_MULT, SPECIAL_PAY_MULT, recipeById, sameItems,
 } from './config.js';
 import { mulberry32, pickFrom, range } from './random.js';
 
@@ -69,13 +70,15 @@ export function spawnOrder(game) {
   const late = game.time > 55 || game.rushing;
   const pool = late ? [...EARLY_RECIPES, ...LATE_RECIPES] : EARLY_RECIPES;
   const recipe = recipeById(pickFrom(game.rng, pool));
-  const patience = orderPatience(game);
+  const special = game.time > 20 && game.rng() < SPECIAL_CHANCE;
+  const patience = orderPatience(game) * (special ? SPECIAL_PATIENCE_MULT : 1);
   const order = {
     id: orderId += 1,
     recipe,
     patience,
     maxPatience: patience,
-    reward: recipe.price,
+    reward: special ? Math.round(recipe.price * SPECIAL_PAY_MULT) : recipe.price,
+    special,
   };
   game.orders.push(order);
   return order;
@@ -94,7 +97,9 @@ export function servePlate(game, order) {
   const patienceFraction = Math.max(0, order.patience / order.maxPatience);
   const tip = Math.round(order.reward * 0.6 * patienceFraction);
   const comboBonus = 1 + 0.25 * Math.min(game.combo, 3);
-  const earned = Math.round((order.reward + tip) * comboBonus);
+  const perfect = patienceFraction >= PERFECT_THRESHOLD;
+  let earned = Math.round((order.reward + tip) * comboBonus);
+  if (perfect) earned = Math.round(earned * PERFECT_BONUS_MULT);
   game.coins += earned;
   game.served += 1;
   game.combo = game.comboTimer > 0 ? game.combo + 1 : 1;
@@ -104,7 +109,8 @@ export function servePlate(game, order) {
   game.player.carry = null;
   game.player.carryItems = null;
   addFloat(game, 900, 700, `+${earned} koin`, '#2f9e44');
-  if (game.combo >= 2) addFloat(game, 900, 668, `KOMBO x${Math.min(game.combo, 4)}!`, '#e8590c');
+  if (perfect) addFloat(game, 900, 668, 'SEMPURNA! +50%', '#f2c14e');
+  if (game.combo >= 2) addFloat(game, 900, 636, `KOMBO x${Math.min(game.combo, 4)}!`, '#e8590c');
   return { earned, plate };
 }
 

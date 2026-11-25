@@ -21,7 +21,7 @@ function patienceColor(fraction) {
   return '#fa5252';
 }
 
-function drawOrderCard(ctx, order, x, y, width, height, highlight) {
+function drawOrderCard(ctx, order, x, y, width, height, highlight, time) {
   const fraction = Math.max(0, order.patience / order.maxPatience);
   ctx.save();
   if (highlight) {
@@ -36,6 +36,27 @@ function drawOrderCard(ctx, order, x, y, width, height, highlight) {
   ctx.lineWidth = highlight ? 3 : 1.5;
   roundRect(ctx, x, y, width, height, 10);
   ctx.stroke();
+  if (order.special) {
+    ctx.strokeStyle = '#f2c14e';
+    ctx.lineWidth = 3;
+    roundRect(ctx, x + 3, y + 3, width - 6, height - 6, 8);
+    ctx.stroke();
+    ctx.fillStyle = '#b8860b';
+    ctx.font = 'bold 11px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('★ SPESIAL', x + width - 8, y + 14);
+    ctx.textAlign = 'left';
+  }
+  if (fraction < 0.25) {
+    const pulse = 0.5 + 0.5 * Math.sin(time * 8);
+    ctx.save();
+    ctx.globalAlpha = 0.35 + 0.55 * pulse;
+    ctx.strokeStyle = '#fa5252';
+    ctx.lineWidth = 3;
+    roundRect(ctx, x, y, width, height, 10);
+    ctx.stroke();
+    ctx.restore();
+  }
   ctx.font = '34px serif';
   ctx.fillText(order.recipe.emoji, x + 10, y + 42);
   ctx.fillStyle = '#33302a';
@@ -222,7 +243,7 @@ function drawHud(ctx, game) {
   const carriedPlate = game.player.carry === 'Plate' ? (game.player.carryItems || []) : null;
   const match = carriedPlate ? findMatchingOrder(game, carriedPlate) : null;
   game.orders.forEach((order, index) => {
-    drawOrderCard(ctx, order, 215 + index * 206, 12, 196, 86, match === order);
+    drawOrderCard(ctx, order, 215 + index * 206, 12, 196, 86, match === order, game.time);
   });
   if (game.orders.length === 0) {
     ctx.fillStyle = '#ffe8cc';
@@ -330,9 +351,10 @@ function drawTitle(ctx, game) {
   ctx.fillStyle = '#33302a';
   const lines = [
     '🎯 Terima pesanan dari papan order, lalu rencanakan rute dapurmu.',
-    '🍚 Ambil Nasi & Es Teh langsung. 🔥 Bakar Ayam, 🍳 masak Mie, 🔪 potong Sayur.',
+    '🍚 Ambil Nasi & Es Teh langsung. 🔥 Bakar Ayam, 🥘 masak Mie, 🔪 potong Sayur.',
     '🍽️ Susun bahan di Meja Plating (maks 3), angkat piringnya, sajikan di Jendela Saji.',
     '⏱️ Sajikan sebelum kesabaran pelanggan habis — makin cepat, makin besar tipnya.',
+    '⭐ Pesanan emas bayar 1,5x • Saji cepat (sabar >60%) = bonus SEMPURNA +50%.',
     '⚡ 30 detik terakhir: SERVICE RUSH! Pesanan datang lebih cepat.',
     '⌨️ WASD / Panah bergerak • E interaksi • Klik stasiun untuk jalan & pakai • P jeda • M suara',
   ];

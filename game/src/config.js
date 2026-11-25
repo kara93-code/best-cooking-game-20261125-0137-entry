@@ -53,6 +53,14 @@ export const GRILL_SLOTS = 2;
 export const RICE_MAX = 3;
 export const RICE_REFILL_SECONDS = 5;
 
+// Special (gold) orders: rare, pay 1.5x, but patience runs out faster.
+// A serve while patience is still above the threshold pays a PERFECT bonus.
+export const SPECIAL_CHANCE = 0.15;
+export const SPECIAL_PAY_MULT = 1.5;
+export const SPECIAL_PATIENCE_MULT = 0.7;
+export const PERFECT_THRESHOLD = 0.6;
+export const PERFECT_BONUS_MULT = 1.5;
+
 export function recipeById(id) {
   return RECIPES.find((recipe) => recipe.id === id);
 }
