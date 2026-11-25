@@ -16,6 +16,9 @@ pesanan datang lebih cepat dan waktu makin sempit.
 - **E / Spasi** — pakai stasiun terdekat
 - **P** — jeda; **M** — suara; **R** — main lagi setelah hari selesai
 - Satu hari = 150 detik, 3 bintang reputasi. Sajikan cepat untuk tip dan kombo.
+  Target: sajikan 9 pesanan untuk rating Koki Andal.
+- 7 resep: Nasi Ayam, Mie Goreng, Nasi Goreng, Mie Ayam, Es Teh, plus hidangan
+  3 bahan Komplit Kilat dan Nasi Campur yang muncul saat dapur mulai ramai.
 - Pesanan spesial (kartu emas) membayar 1,5x tapi sabarnya lebih cepat habis;
   sajikan selagi sabar pelanggan masih di atas 60% untuk bonus SEMPURNA +50%.
 

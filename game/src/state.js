@@ -102,6 +102,8 @@ export function servePlate(game, order) {
   if (perfect) earned = Math.round(earned * PERFECT_BONUS_MULT);
   game.coins += earned;
   game.served += 1;
+  addParticles(game, 900, 700, '#ffd43b', 14);
+  addParticles(game, 900, 700, '#2f9e44', 8);
   game.combo = game.comboTimer > 0 ? game.combo + 1 : 1;
   game.comboTimer = 8;
   game.orders = game.orders.filter((item) => item.id !== order.id);

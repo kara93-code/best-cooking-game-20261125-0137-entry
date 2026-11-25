@@ -29,11 +29,12 @@ export const RECIPES = [
   { id: 'mie-ayam', name: 'Mie Ayam', emoji: '🍜', items: ['Mie', 'Ayam'], price: 15 },
   { id: 'es-teh', name: 'Es Teh', emoji: '🧋', items: ['Teh'], price: 8 },
   { id: 'komplit', name: 'Komplit Kilat', emoji: '🍱', items: ['Nasi', 'Ayam', 'Sayur'], price: 22 },
+  { id: 'nasi-campur', name: 'Nasi Campur', emoji: '🥡', items: ['Nasi', 'Mie', 'Sayur'], price: 20 },
 ];
 
-// Early orders are simple; the 3-item Komplit only appears once the rush builds.
+// Early orders are simple; the 3-item dishes only appear once the rush builds.
 export const EARLY_RECIPES = ['nasi-ayam', 'mie-goreng', 'nasi-goreng', 'es-teh'];
-export const LATE_RECIPES = ['mie-ayam', 'komplit'];
+export const LATE_RECIPES = ['mie-ayam', 'komplit', 'nasi-campur'];
 
 export const STATIONS = {
   nasi: { id: 'nasi', label: 'Rice Cooker', hint: 'Ambil Nasi', x: 40, y: 128, width: 180, height: 84, emoji: '🍚', tint: '#f6d9a0' },

@@ -172,6 +172,38 @@ function drawStation(ctx, game, station) {
   }
 }
 
+function drawCustomers(ctx, game) {
+  if (game.screen !== 'play') return;
+  const faces = ['🧑', '👩', '👵', '👨'];
+  const shirts = ['#e8590c', '#4c6ef5', '#2f9e44', '#fab005'];
+  game.orders.forEach((order, index) => {
+    const x = 700 + index * 130;
+    const y = 596;
+    ctx.fillStyle = 'rgba(0,0,0,0.15)';
+    ctx.beginPath();
+    ctx.ellipse(x, y + 34, 22, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Colored body so the customer reads against the pale floor.
+    ctx.fillStyle = shirts[index % shirts.length];
+    ctx.beginPath();
+    ctx.arc(x, y + 18, 20, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = '32px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(faces[index % faces.length], x, y + 14);
+    ctx.fillStyle = '#fff9e6';
+    ctx.beginPath();
+    ctx.arc(x, y - 46, 21, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#e9c46a';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.font = '20px serif';
+    ctx.fillText(order.recipe.emoji, x, y - 39);
+    ctx.textAlign = 'left';
+  });
+}
+
 function drawPlayer(ctx, game) {
   const player = game.player;
   ctx.save();
@@ -262,7 +294,7 @@ function drawHud(ctx, game) {
   ctx.fillText(`🪙 ${game.coins}`, panelX, 68);
   ctx.fillStyle = '#fff8e7';
   ctx.font = '15px sans-serif';
-  ctx.fillText(`Saji: ${game.served}  •  ★ ${'★'.repeat(game.stars)}${'☆'.repeat(3 - game.stars)}`, panelX, 92);
+  ctx.fillText(`Saji: ${game.served}/9  •  ★ ${'★'.repeat(game.stars)}${'☆'.repeat(3 - game.stars)}`, panelX, 92);
   ctx.textAlign = 'left';
   const dayFraction = 1 - game.timeLeft / DAY_SECONDS;
   ctx.fillStyle = '#3b2f23';
@@ -410,6 +442,7 @@ export function renderGame(ctx, game) {
   ctx.clearRect(0, 0, VIEW.width, VIEW.height);
   drawFloor(ctx, game);
   for (const id of STATION_ORDER) drawStation(ctx, game, STATIONS[id]);
+  drawCustomers(ctx, game);
   if (game.screen !== 'title') drawPlayer(ctx, game);
   for (const particle of game.particles) {
     ctx.globalAlpha = Math.max(0, particle.life / particle.maxLife);

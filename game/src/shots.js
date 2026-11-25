@@ -81,7 +81,7 @@ export function stageShot(name, game) {
   }
   // cover (default): a busy kitchen, three orders, food everywhere.
   setOrder(game, 'nasi-ayam', 40, true);
-  setOrder(game, 'mie-goreng', 28);
+  setOrder(game, 'nasi-campur', 28);
   setOrder(game, 'es-teh', 47);
   game.time = 62;
   game.timeLeft = 88;
