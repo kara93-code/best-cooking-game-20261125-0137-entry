@@ -52,6 +52,17 @@ export class SoundEngine {
     this.tone(659, 0.1, 'triangle', 0.28, 0.08);
     this.tone(784, 0.18, 'triangle', 0.3, 0.16);
   }
+  servePerfect() {
+    this.tone(523, 0.1, 'triangle', 0.28);
+    this.tone(659, 0.1, 'triangle', 0.28, 0.08);
+    this.tone(784, 0.14, 'triangle', 0.3, 0.16);
+    this.tone(1047, 0.22, 'triangle', 0.3, 0.28);
+    this.tone(1319, 0.2, 'sine', 0.2, 0.34);
+  }
+  sizzleTick() {
+    if (!this.context || this.muted) return;
+    this.tone(2200 + Math.random() * 2000, 0.03, 'square', 0.015);
+  }
   fail() { this.tone(160, 0.22, 'sawtooth', 0.16); this.tone(120, 0.26, 'sawtooth', 0.14, 0.1); }
   orderIn() { this.tone(880, 0.07, 'sine', 0.18); this.tone(1175, 0.09, 'sine', 0.16, 0.07); }
   rush() { this.tone(440, 0.1, 'square', 0.14); this.tone(440, 0.1, 'square', 0.14, 0.14); this.tone(587, 0.16, 'square', 0.14, 0.28); }

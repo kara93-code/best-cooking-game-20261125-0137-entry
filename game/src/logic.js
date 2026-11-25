@@ -121,7 +121,8 @@ function interact(game, station, sound) {
     const result = servePlate(game, order);
     addParticles(game, station.x + station.width / 2, station.y + 30, '#ffd43b', 14);
     say(`${order.recipe.name} tersaji!`);
-    sound.serve();
+    if (result.perfect || order.special) sound.servePerfect();
+    else sound.serve();
     return result;
   }
 
@@ -191,14 +192,21 @@ function tickProcessors(game, dt, sound) {
     }
   }
   for (const id of ['grill', 'wok', 'chop']) {
-    for (const slot of game.stations[id].slots) {
+    for (const [slotIndex, slot] of game.stations[id].slots.entries()) {
       if (!slot.active || slot.t >= slot.dur) continue;
       const before = slot.t;
       slot.t += dt;
+      // Steam puffs while food is cooking.
+      if (game.rng() < dt * 2.5) {
+        const sx = STATIONS[id].x + STATIONS[id].width - 58 + slotIndex * 28 + 12;
+        addParticles(game, sx, STATIONS[id].y + 34, '#e9ecef', 1);
+      }
       if (before < slot.dur && slot.t >= slot.dur) {
         sound.cookDone();
         addParticles(game, STATIONS[id].x + STATIONS[id].width / 2, STATIONS[id].y + 30, '#fff', 5);
       }
+      // Sizzle crackle while the station is hot.
+      if (slot.active && slot.t < slot.dur && game.rng() < dt * 5) sound.sizzleTick();
     }
   }
 }

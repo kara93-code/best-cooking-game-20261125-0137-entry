@@ -351,12 +351,12 @@ function drawRush(ctx, game) {
   ctx.lineWidth = 10;
   ctx.strokeRect(5, 5, VIEW.width - 10, VIEW.height - 10);
   ctx.fillStyle = '#e03131';
-  roundRect(ctx, 480, 118, 320, 36, 10);
+  roundRect(ctx, 480, 214, 320, 30, 10);
   ctx.fill();
   ctx.fillStyle = '#fff';
-  ctx.font = 'bold 20px sans-serif';
+  ctx.font = 'bold 18px sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('⚡ SERVICE RUSH! ⚡', 640, 142);
+  ctx.fillText('⚡ SERVICE RUSH! ⚡', 640, 236);
   ctx.textAlign = 'left';
   ctx.restore();
 }
@@ -377,7 +377,7 @@ function drawTitle(ctx, game) {
   ctx.fillText('🍲 WARUNG KILAT', 640, 210);
   ctx.font = '20px sans-serif';
   ctx.fillStyle = '#6b6257';
-  ctx.fillText('Game memasak serba cepat — masak, susun, sajikan!', 640, 248);
+  ctx.fillText('Game memasak serba cepat — masak, susun, sajikan! Target: 9 pesanan.', 640, 248);
   ctx.textAlign = 'left';
   ctx.font = '17px sans-serif';
   ctx.fillStyle = '#33302a';

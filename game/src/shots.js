@@ -4,7 +4,7 @@
 // every frame is the game code running in the browser.
 
 import { recipeById } from './config.js';
-import { spawnOrder, startDay } from './state.js';
+import { addParticles, spawnOrder, startDay } from './state.js';
 
 function setOrder(game, recipeId, patience, special = false) {
   const recipe = recipeById(recipeId);
@@ -32,6 +32,9 @@ export function stageShot(name, game) {
     cookSlot(game, 'grill', 0, 0.55);
     cookSlot(game, 'wok', 0, 1);
     cookSlot(game, 'chop', 0, 0.5);
+    addParticles(game, 394, 160, '#e9ecef', 2);
+    addParticles(game, 614, 160, '#e9ecef', 2);
+    addParticles(game, 834, 160, '#e9ecef', 2);
     game.stations.nasi.stock = 3;
     game.stations.plate = ['Mie'];
     game.player.x = 790;
@@ -93,6 +96,10 @@ export function stageShot(name, game) {
   cookSlot(game, 'grill', 1, 0.6);
   cookSlot(game, 'wok', 0, 0.75);
   cookSlot(game, 'chop', 0, 1);
+  addParticles(game, 394, 160, '#e9ecef', 2);
+  addParticles(game, 422, 160, '#e9ecef', 2);
+  addParticles(game, 614, 160, '#e9ecef', 2);
+  addParticles(game, 834, 160, '#e9ecef', 2);
   game.stations.nasi.stock = 2;
   game.stations.plate = ['Sayur'];
   game.player.x = 400;

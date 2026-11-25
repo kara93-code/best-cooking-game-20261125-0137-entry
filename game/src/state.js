@@ -3,8 +3,8 @@
 
 import {
   DAY_SECONDS, EARLY_RECIPES, LATE_RECIPES, MAX_ORDERS, MAX_STARS,
-  PERFECT_BONUS_MULT, PERFECT_THRESHOLD, RICE_MAX, SPECIAL_CHANCE,
-  SPECIAL_PATIENCE_MULT, SPECIAL_PAY_MULT, recipeById, sameItems,
+  PERFECT_BONUS_MULT, PERFECT_THRESHOLD, RICE_MAX, RUSH_BONUS_MULT,
+  SPECIAL_CHANCE, SPECIAL_PATIENCE_MULT, SPECIAL_PAY_MULT, recipeById, sameItems,
 } from './config.js';
 import { mulberry32, pickFrom, range } from './random.js';
 
@@ -49,6 +49,8 @@ export function startDay(game) {
   const fresh = createGame(game.seed);
   Object.keys(fresh).forEach((key) => { game[key] = fresh[key]; });
   game.screen = 'play';
+  game.message = 'Pesanan masuk! Ambil bahan di stasiun atas, susun di piring, sajikan!';
+  game.messageTimer = 4;
   spawnOrder(game);
   spawnOrder(game);
 }
@@ -100,8 +102,17 @@ export function servePlate(game, order) {
   const perfect = patienceFraction >= PERFECT_THRESHOLD;
   let earned = Math.round((order.reward + tip) * comboBonus);
   if (perfect) earned = Math.round(earned * PERFECT_BONUS_MULT);
+  if (game.rushing) earned = Math.round(earned * RUSH_BONUS_MULT);
   game.coins += earned;
   game.served += 1;
+  // The customer who got their dish is happy.
+  const customerIndex = game.orders.findIndex((item) => item.id === order.id);
+  if (customerIndex >= 0) addFloat(game, 700 + customerIndex * 130, 512, '❤️', '#e03131');
+  // Every 5th serve wins back one reputation star.
+  if (game.served % 5 === 0 && game.stars < MAX_STARS) {
+    game.stars += 1;
+    addFloat(game, 900, 572, '★ Reputasi pulih!', '#fab005');
+  }
   addParticles(game, 900, 700, '#ffd43b', 14);
   addParticles(game, 900, 700, '#2f9e44', 8);
   game.combo = game.comboTimer > 0 ? game.combo + 1 : 1;
@@ -112,8 +123,9 @@ export function servePlate(game, order) {
   game.player.carryItems = null;
   addFloat(game, 900, 700, `+${earned} koin`, '#2f9e44');
   if (perfect) addFloat(game, 900, 668, 'SEMPURNA! +50%', '#f2c14e');
-  if (game.combo >= 2) addFloat(game, 900, 636, `KOMBO x${Math.min(game.combo, 4)}!`, '#e8590c');
-  return { earned, plate };
+  if (game.rushing) addFloat(game, 900, 636, 'RUSH +25%', '#e03131');
+  if (game.combo >= 2) addFloat(game, 900, 604, `KOMBO x${Math.min(game.combo, 4)}!`, '#e8590c');
+  return { earned, plate, perfect, special: !!order.special };
 }
 
 export function expireOrder(game, order) {

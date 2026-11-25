@@ -21,6 +21,8 @@ pesanan datang lebih cepat dan waktu makin sempit.
   3 bahan Komplit Kilat dan Nasi Campur yang muncul saat dapur mulai ramai.
 - Pesanan spesial (kartu emas) membayar 1,5x tapi sabarnya lebih cepat habis;
   sajikan selagi sabar pelanggan masih di atas 60% untuk bonus SEMPURNA +50%.
+- SERVICE RUSH (30 detik terakhir): semua sajian +25%; tiap 5 sajian memulihkan
+  1 bintang reputasi. Pelanggan yang menerima pesanannya menunjukkan hati ❤️.
 
 ## Jalankan
 
